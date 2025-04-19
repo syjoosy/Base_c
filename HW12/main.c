@@ -1,9 +1,45 @@
 #include <stdio.h>
 #include "temp_api.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 #define MAX_DATA_SIZE 100
 
-int main() {
+int main(int argc, char *argv[]) 
+{
+    // for (size_t i = 0; i < argc; i++)
+    // {
+    //     printf("argc = %d, argb = %s\n", i, argv[i]);
+    //     char* str = argv[i];
+        int current_month = 0;
+        int rez=0;
+        //  opterr=0;
+        while ( (rez = getopt(argc,argv,"hf:m:")) != -1)
+        {
+            switch (rez)
+            {
+                case 'h': 
+                    printf("Program help: \n"); 
+                    printf("-h - printf program help \n");
+                    printf("-f - choose SCV file \n");
+                    printf("-m - choose current month \n");
+                    break;
+                case 'f': 
+                    printf("Choose CSV file: %s\n",optarg); 
+                    break;
+                case 'm': 
+                    printf("Choosen month: %s\n",optarg); 
+                    current_month = atoi(optarg);
+                    break;
+                default:
+                    printf("Unknown argument. Try -h\n"); 
+                    break;
+            };
+        };
+
+
+    // }
+    
     TemperatureData data[MAX_DATA_SIZE];
     int size = 0;
 
@@ -44,7 +80,7 @@ int main() {
 
     size = 4;
 
-    calculate_monthly_statistics(data, 3, size);
+    calculate_monthly_statistics(data, current_month, size);
     calculate_annual_statistics(data, 2025, size);
 
     return 0;
